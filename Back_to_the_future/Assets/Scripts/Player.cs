@@ -17,11 +17,16 @@ public class Player : MonoBehaviour
 
     bool isGrounded;
 
+    int lives = 3;
+
+    public float oneLifeTime = 5f;
+
 
     // Start is called before the first frame update
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        StartCoroutine(timeDeseaseCoroutine());
     }
 
     // Update is called once per frame
@@ -55,7 +60,10 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         
-
+        if (lives == 0)
+        {
+            Debug.Log("Game Over!");
+        }
         
     }
 
@@ -68,6 +76,26 @@ public class Player : MonoBehaviour
         else
         {
             transform.localRotation = Quaternion.Euler(0, 180, 0);
+        }
+    }
+
+
+    IEnumerator timeDeseaseCoroutine()
+    {
+        while (lives != 0)
+        {
+            yield return new WaitForSeconds(oneLifeTime);
+            lives -= 1;
+        }
+    }
+
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "DeadlyObject")
+        {
+            Debug.Log("Ouch, hurts!");
+            lives = 0;
         }
     }
 }
