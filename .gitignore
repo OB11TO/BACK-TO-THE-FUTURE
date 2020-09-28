@@ -22,7 +22,6 @@ sysinfo.txt
 *.pidb.meta
 /*.suo
 /*.user
-/*.unityproj
 /*.booproj
 .consulo/
 /*.tmp
