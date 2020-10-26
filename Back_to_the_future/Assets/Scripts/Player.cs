@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Player : MonoBehaviour
 {
 
@@ -15,11 +14,17 @@ public class Player : MonoBehaviour
 
     public Transform checkGround;
 
-    bool isGrounded;
+    bool isNotGrounded;
 
     int lives = 3;
 
-    public float oneLifeTime = 5f;
+    bool isJumping = false;
+
+
+    public float oneLifeTime = 15f;
+
+    CharacterAnimation anim;
+
 
 
     // Start is called before the first frame update
@@ -27,12 +32,15 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(timeDeseaseCoroutine());
+        anim = transform.GetComponent<CharacterAnimation>();
     }
 
     // Update is called once per frame
     private void Update()
     {
         Flip();
+
+        ControlAnimation();
         CheckGround();
     }
 
@@ -46,15 +54,20 @@ public class Player : MonoBehaviour
 
     public void Jump ()
     {
-        if (isGrounded)
+        if (isNotGrounded)
+        {
+            isJumping = true;
             rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
+        }
     }
 
 
     private void CheckGround()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(checkGround.position, 0.2f);
-        isGrounded = colliders.Length > 1;
+        isNotGrounded = colliders.Length > 1;
+
+
     }
 
     private void FixedUpdate()
@@ -64,7 +77,8 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Game Over!");
         }
-        
+
+
     }
 
     private void Flip()
@@ -97,5 +111,37 @@ public class Player : MonoBehaviour
             Debug.Log("Ouch, hurts!");
             lives = 0;
         }
+    }
+
+
+    void ControlAnimation ()
+    {
+        if (lives == 0) anim.Die();
+        else if (IsJumping()) anim.Jump();
+        else if (isNotGrounded)
+        {
+            if (IsRunning())
+            {
+                anim.Run(rb.velocity.x / 4f);
+            }
+            else
+            {
+                anim.Idle();
+            }
+        }
+    }
+
+
+    bool IsRunning()
+    {
+        return rb.velocity.x != 0;
+    }
+
+
+    bool IsJumping ()
+    {
+        bool jumping = isJumping && isNotGrounded;
+        if (!isNotGrounded) isJumping = false;
+        return jumping;
     }
 }

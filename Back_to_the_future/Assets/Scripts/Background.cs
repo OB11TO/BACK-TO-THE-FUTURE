@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
-    float length, startPosition;
+    float length, startPositionX, startPositionY;
     public GameObject camera;
+    public bool isSky = false;
 
     public float parallaxEffect;
     // Start is called before the first frame update
     void Start()
     {
-        startPosition = transform.position.x;
+        startPositionX = transform.position.x;
+        startPositionY = transform.position.y;
+
         length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
@@ -20,12 +23,13 @@ public class Background : MonoBehaviour
     {
         float temp = camera.transform.position.x * (1 - parallaxEffect);
         float dist = camera.transform.position.x * parallaxEffect;
+        float distY = camera.transform.position.y * parallaxEffect * 0.85f;
 
-        transform.position = new Vector3(startPosition + dist, transform.position.y, transform.position.z);
+        transform.position = new Vector3(startPositionX + dist, !isSky? startPositionY + distY : transform.position.y, transform.position.z);
 
-        if (temp > startPosition + length)
-            startPosition += length;
-        else if (temp < startPosition - length)
-            startPosition -= length;
+        if (temp > startPositionX + length)
+            startPositionX += length;
+        else if (temp < startPositionX - length)
+            startPositionX -= length;
     }
 }
