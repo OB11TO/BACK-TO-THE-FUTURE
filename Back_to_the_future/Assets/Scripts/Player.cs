@@ -14,13 +14,17 @@ public class Player : MonoBehaviour
 
     public Transform checkGround;
 
-    bool isGrounded;
+    bool isNotGrounded;
 
     int lives = 3;
 
-    public float oneLifeTime = 5f;
+    bool isJumping = false;
 
-    DragonBones.UnityArmatureComponent unityArmatureComponent;
+
+    public float oneLifeTime = 15f;
+
+    CharacterAnimation anim;
+
 
 
     // Start is called before the first frame update
@@ -28,19 +32,16 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(timeDeseaseCoroutine());
-
-        unityArmatureComponent = GetComponentInChildren<DragonBones.UnityArmatureComponent>();
-        unityArmatureComponent.animation.FadeIn("idle", 0.25f, -1);
-
+        anim = transform.GetComponent<CharacterAnimation>();
     }
 
     // Update is called once per frame
     private void Update()
     {
         Flip();
+
+        ControlAnimation();
         CheckGround();
-        if (unityArmatureComponent.animationName != "idle")
-            unityArmatureComponent.animation.FadeIn("idle", 0.25f, -1);
     }
 
 
@@ -49,20 +50,14 @@ public class Player : MonoBehaviour
         if (direction > 0.0f) isMovingForward = true;
         else isMovingForward = false;
         rb.velocity = new Vector2(direction * velocity, rb.velocity.y);
-        if (unityArmatureComponent.animationName != "running")
-            unityArmatureComponent.animation.FadeIn("running", 0.125f, -1);
-        unityArmatureComponent.armature.flipX = isMovingForward;
-
     }
 
     public void Jump ()
     {
-        if (isGrounded)
+        if (isNotGrounded)
         {
+            isJumping = true;
             rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
-            if (unityArmatureComponent.animationName != "jumping")
-                unityArmatureComponent.animation.FadeIn("jumping", 0.125f, 1);
-            unityArmatureComponent.armature.flipX = isMovingForward;
         }
     }
 
@@ -70,7 +65,9 @@ public class Player : MonoBehaviour
     private void CheckGround()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(checkGround.position, 0.2f);
-        isGrounded = colliders.Length > 1;
+        isNotGrounded = colliders.Length > 1;
+
+
     }
 
     private void FixedUpdate()
@@ -80,7 +77,8 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Game Over!");
         }
-        
+
+
     }
 
     private void Flip()
@@ -113,5 +111,37 @@ public class Player : MonoBehaviour
             Debug.Log("Ouch, hurts!");
             lives = 0;
         }
+    }
+
+
+    void ControlAnimation ()
+    {
+        if (lives == 0) anim.Die();
+        else if (IsJumping()) anim.Jump();
+        else if (isNotGrounded)
+        {
+            if (IsRunning())
+            {
+                anim.Run(rb.velocity.x / 4f);
+            }
+            else
+            {
+                anim.Idle();
+            }
+        }
+    }
+
+
+    bool IsRunning()
+    {
+        return rb.velocity.x != 0;
+    }
+
+
+    bool IsJumping ()
+    {
+        bool jumping = isJumping && isNotGrounded;
+        if (!isNotGrounded) isJumping = false;
+        return jumping;
     }
 }

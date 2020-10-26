@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 1a64e5b0e436d4bed9780211ae245f7b, type: 3}
   m_Name: Saw_Data
-  m_EditorClassIdentifier: Assembly-CSharp:DragonBones:UnityDragonBonesData
+  m_EditorClassIdentifier: 
   dataName: Saw
   dragonBonesJSON: {fileID: 4900000, guid: ee6456fedc0dc544e8c72041f419da5e, type: 3}
   textureAtlas:
