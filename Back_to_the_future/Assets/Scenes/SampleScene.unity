@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 149657701}
   - component: {fileID: 149657703}
   - component: {fileID: 149657702}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: golova
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -744,7 +744,7 @@ GameObject:
   - component: {fileID: 290335321}
   - component: {fileID: 290335323}
   - component: {fileID: 290335322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: noga_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -970,7 +970,7 @@ GameObject:
   - component: {fileID: 347267613}
   - component: {fileID: 347267612}
   - component: {fileID: 347267614}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1032,9 +1032,9 @@ MonoBehaviour:
   armatureName: Armature
   isUGUI: 0
   debugDraw: 0
-  animationName: 
+  animationName: new_jumping
   _playTimes: 0
-  _timeScale: -0.09
+  _timeScale: 1
   _sortingMode: 1
   _sortingLayerName: Default
   _sortingOrder: 0
@@ -1211,7 +1211,7 @@ GameObject:
   - component: {fileID: 444985544}
   - component: {fileID: 444985546}
   - component: {fileID: 444985545}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tulovische
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1700,7 +1700,7 @@ GameObject:
   - component: {fileID: 566923245}
   - component: {fileID: 566923247}
   - component: {fileID: 566923246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ruka2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2267,7 +2267,7 @@ GameObject:
   - component: {fileID: 1314146792}
   - component: {fileID: 1314146796}
   - component: {fileID: 1314146794}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleAnimation: idle
   runAnimation: running
-  jumpAnimation: jumping
+  jumpAnimation: new_jumping
   deathAnimation: dying
 --- !u!4 &1314146795
 Transform:
@@ -2355,6 +2355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32632d2325724404192bab0c54a55689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blood: {fileID: 2164899907445701890, guid: fcca01a6f7582064bad9aff4d0aef05d, type: 3}
   velocity: 5
   jumpHeight: 10
   checkGround: {fileID: 1597574224}
@@ -10188,7 +10189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1597574224}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CheckGround
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -10220,7 +10221,7 @@ GameObject:
   - component: {fileID: 1658452466}
   - component: {fileID: 1658452468}
   - component: {fileID: 1658452467}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: golova_dead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10481,7 +10482,7 @@ GameObject:
   - component: {fileID: 1802538084}
   - component: {fileID: 1802538086}
   - component: {fileID: 1802538085}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ruka1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10560,7 +10561,7 @@ GameObject:
   - component: {fileID: 1825699084}
   - component: {fileID: 1825699086}
   - component: {fileID: 1825699085}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: noga2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

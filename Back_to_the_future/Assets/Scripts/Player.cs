@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour
 {
-
+    public GameObject blood;
     private Rigidbody2D rb;
 
     public float velocity;
@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
     CharacterAnimation anim;
 
+    bool isDead = false;
 
 
     // Start is called before the first frame update
@@ -74,11 +75,23 @@ public class Player : MonoBehaviour
     {
         
         if (lives == 0)
-        {
-            Debug.Log("Game Over!");
+        {     
+            Die();
         }
 
 
+    }
+
+
+    void Die()
+    {
+        if (!isDead)
+        {
+            Debug.Log("Game Over!");
+            Instantiate(blood, transform);
+            isDead = true;
+            //Destroy(gameObject, 3f);
+        }
     }
 
     private void Flip()
