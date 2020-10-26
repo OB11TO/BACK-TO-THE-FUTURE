@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Player : MonoBehaviour
 {
 
@@ -21,12 +20,18 @@ public class Player : MonoBehaviour
 
     public float oneLifeTime = 5f;
 
+    DragonBones.UnityArmatureComponent unityArmatureComponent;
+
 
     // Start is called before the first frame update
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(timeDeseaseCoroutine());
+
+        unityArmatureComponent = GetComponentInChildren<DragonBones.UnityArmatureComponent>();
+        unityArmatureComponent.animation.FadeIn("idle", 0.25f, -1);
+
     }
 
     // Update is called once per frame
@@ -34,6 +39,8 @@ public class Player : MonoBehaviour
     {
         Flip();
         CheckGround();
+        if (unityArmatureComponent.animationName != "idle")
+            unityArmatureComponent.animation.FadeIn("idle", 0.25f, -1);
     }
 
 
@@ -42,12 +49,21 @@ public class Player : MonoBehaviour
         if (direction > 0.0f) isMovingForward = true;
         else isMovingForward = false;
         rb.velocity = new Vector2(direction * velocity, rb.velocity.y);
+        if (unityArmatureComponent.animationName != "running")
+            unityArmatureComponent.animation.FadeIn("running", 0.125f, -1);
+        unityArmatureComponent.armature.flipX = isMovingForward;
+
     }
 
     public void Jump ()
     {
         if (isGrounded)
+        {
             rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
+            if (unityArmatureComponent.animationName != "jumping")
+                unityArmatureComponent.animation.FadeIn("jumping", 0.125f, 1);
+            unityArmatureComponent.armature.flipX = isMovingForward;
+        }
     }
 
 
