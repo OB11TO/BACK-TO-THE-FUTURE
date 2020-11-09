@@ -104,6 +104,7 @@
      <Compile Include="Assets\DragonBones\Scripts\unity\UnitySlot.cs" />
      <Compile Include="Assets\DragonBones\Scripts\unity\UnityTextureAtlasData.cs" />
      <Compile Include="Assets\DragonBones\Scripts\unity\UnityUGUIDisplay.cs" />
+     <Compile Include="Assets\Monster.cs" />
      <Compile Include="Assets\Scripts\Background.cs" />
      <Compile Include="Assets\Scripts\CameraFlow.cs" />
      <Compile Include="Assets\Scripts\CharacterAnimation.cs" />

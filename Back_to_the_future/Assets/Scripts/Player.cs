@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour
@@ -27,12 +28,17 @@ public class Player : MonoBehaviour
 
     bool isDead = false;
 
+    bool blockedMoving = false;
+
+    IEnumerator coroutine;
+
 
     // Start is called before the first frame update
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        StartCoroutine(timeDeseaseCoroutine());
+        coroutine = timeDeseaseCoroutine();
+        StartCoroutine(coroutine);
         anim = transform.GetComponent<CharacterAnimation>();
     }
 
@@ -48,14 +54,17 @@ public class Player : MonoBehaviour
 
     public void MovePlayer (float direction)
     {
-        if (direction > 0.0f) isMovingForward = true;
-        else isMovingForward = false;
-        rb.velocity = new Vector2(direction * velocity, rb.velocity.y);
+        if (!blockedMoving)
+        {
+            if (direction > 0.0f) isMovingForward = true;
+            else isMovingForward = false;
+            rb.velocity = new Vector2(direction * velocity, rb.velocity.y);
+        }
     }
 
     public void Jump ()
     {
-        if (isNotGrounded)
+        if (isNotGrounded && !blockedMoving)
         {
             isJumping = true;
             rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
@@ -156,5 +165,27 @@ public class Player : MonoBehaviour
         bool jumping = isJumping && isNotGrounded;
         if (!isNotGrounded) isJumping = false;
         return jumping;
+    }
+
+
+    public void OnMonsterMet ()
+    {
+        Debug.Log("Monster met");
+        blockedMoving = true;
+        StopCoroutine(coroutine);
+    }
+
+    public void OnMosterFail()
+    {
+        Debug.Log("Monster killed player");
+        lives = 0;
+    }
+
+    public void OnMonsterSuccess()
+    {
+        Debug.Log("Player killed monster");
+        blockedMoving = false;
+        lives = 4;
+        StartCoroutine(coroutine);
     }
 }
