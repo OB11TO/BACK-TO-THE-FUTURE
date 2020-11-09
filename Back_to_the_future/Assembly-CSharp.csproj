@@ -104,9 +104,11 @@
      <Compile Include="Assets\DragonBones\Scripts\unity\UnitySlot.cs" />
      <Compile Include="Assets\DragonBones\Scripts\unity\UnityTextureAtlasData.cs" />
      <Compile Include="Assets\DragonBones\Scripts\unity\UnityUGUIDisplay.cs" />
+     <Compile Include="Assets\Monster.cs" />
      <Compile Include="Assets\Scripts\Background.cs" />
      <Compile Include="Assets\Scripts\CameraFlow.cs" />
      <Compile Include="Assets\Scripts\CharacterAnimation.cs" />
+     <Compile Include="Assets\Scripts\DestroyGameObject.cs" />
      <Compile Include="Assets\Scripts\LongPress.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <None Include="Assets\platformer-pack-redux-360-assets\Spritesheets\spritesheet_players.xml" />
