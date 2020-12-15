@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     public GameObject blood;
@@ -15,11 +17,16 @@ public class Player : MonoBehaviour
 
     public Transform checkGround;
 
-    bool isNotGrounded;
+    bool isGrounded;
 
     int lives = 3;
 
+    public int numOfHearts = 3;
+    public Image[] hearts;
+
     bool isJumping = false;
+
+    bool isFallen = false;
 
 
     public float oneLifeTime = 15f;
@@ -27,6 +34,20 @@ public class Player : MonoBehaviour
     CharacterAnimation anim;
 
     bool isDead = false;
+
+    public bool IsDead
+    {
+        get { return isDead; }
+    }
+
+    private bool isWon = false;
+    public bool IsWon
+    {
+        get { return isWon; }
+    }
+
+    public UnityEvent onPlayerWon;
+    public UnityEvent onPlayerLost;
 
     bool blockedMoving = false;
 
@@ -64,7 +85,7 @@ public class Player : MonoBehaviour
 
     public void Jump ()
     {
-        if (isNotGrounded && !blockedMoving)
+        if (isGrounded && !blockedMoving)
         {
             isJumping = true;
             rb.AddForce(transform.up * jumpHeight, ForceMode2D.Impulse);
@@ -74,15 +95,32 @@ public class Player : MonoBehaviour
 
     private void CheckGround()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(checkGround.position, 0.2f);
-        isNotGrounded = colliders.Length > 1;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(checkGround.position, 0.3f);
+        isGrounded = colliders.Length > 1;
 
 
     }
 
     private void FixedUpdate()
     {
-        
+        if (lives > numOfHearts)
+        {
+            lives = numOfHearts;
+        }
+
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < lives)
+            {
+                hearts[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                hearts[i].gameObject.SetActive(false);
+            }
+        }
+
+
         if (lives == 0)
         {     
             Die();
@@ -97,9 +135,11 @@ public class Player : MonoBehaviour
         if (!isDead)
         {
             Debug.Log("Game Over!");
-            Instantiate(blood, transform);
+            if (!isFallen)
+                Instantiate(blood, transform);
             isDead = true;
             //Destroy(gameObject, 3f);
+            onPlayerLost.Invoke();
         }
     }
 
@@ -133,6 +173,14 @@ public class Player : MonoBehaviour
             Debug.Log("Ouch, hurts!");
             lives = 0;
         }
+        else if (collision.gameObject.tag == "Finish")
+        {
+            Debug.Log("Finished!");
+            StopCoroutine(coroutine);
+            isWon = true;
+            blockedMoving = true;
+            onPlayerWon.Invoke();
+        }
     }
 
 
@@ -140,7 +188,7 @@ public class Player : MonoBehaviour
     {
         if (lives == 0) anim.Die();
         else if (IsJumping()) anim.Jump();
-        else if (isNotGrounded)
+        else if (isGrounded)
         {
             if (IsRunning())
             {
@@ -162,8 +210,8 @@ public class Player : MonoBehaviour
 
     bool IsJumping ()
     {
-        bool jumping = isJumping && isNotGrounded;
-        if (!isNotGrounded) isJumping = false;
+        bool jumping = isJumping && isGrounded;
+        if (!isGrounded) isJumping = false;
         return jumping;
     }
 
@@ -187,5 +235,12 @@ public class Player : MonoBehaviour
         blockedMoving = false;
         lives = 4;
         StartCoroutine(coroutine);
+    }
+
+    public void OnPlayerFall ()
+    {
+        isFallen = true;
+        StopAllCoroutines();
+        lives = 0;
     }
 }

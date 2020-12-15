@@ -5,6 +5,8 @@ using UnityEngine;
 public class CameraFlow : MonoBehaviour
 {
 
+    Camera mainCamera;
+
     public Transform player;
 
     public float velocity;
@@ -12,7 +14,8 @@ public class CameraFlow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(player.position.x, player.position.y + 1.5f, transform.position.z);
+        transform.position = new Vector3(player.position.x, player.position.y, transform.position.z);
+        mainCamera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -20,8 +23,10 @@ public class CameraFlow : MonoBehaviour
     {
         Vector3 position = player.position;
         position.z = transform.position.z;
-        position.y += 1.5f;
+
+        if (position.x < 0f) position.x = 0f;
 
         transform.position = Vector3.Lerp(transform.position, position, velocity * Time.deltaTime);
     }
+
 }
